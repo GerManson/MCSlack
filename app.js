@@ -34,8 +34,6 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
   isAction = app.isAction(message.text);
 
   if (isAction) {
-
-    switch(
     response = "I understood!!";
   }
 
