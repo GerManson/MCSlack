@@ -18,8 +18,10 @@
   "homepage": "https://github.com/GerManson/MCSlack#readme",
   "dependencies": {
     "@slack/client": "^2.0.6",
+    "applescript": "^1.0.0",
     "dotenv": "^2.0.0",
     "slack-node": "^0.2.0",
+    "spotify-node-applescript": "^0.2.2",
     "underscore": "^1.8.3"
   }
 }
