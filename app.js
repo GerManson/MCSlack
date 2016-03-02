@@ -1,5 +1,4 @@
 // Dependencies
-var express = require('express');
 var dotenv = require('dotenv');
 
 var RtmClient = require('@slack/client').RtmClient;
@@ -13,15 +12,8 @@ dotenv.load();
 var token = process.env.SLACK_TOKEN || '';
 
 // Initializations
-var app = express();
 var rtm = new RtmClient(token, {logLevel: 'live'});
 rtm.start();
-
-
-// routes and responses
-app.get('/', function (req, res) {
-  res.send('Server Running...!');
-});
 
 
 // LISTENING FOR SLACK EVENTS
@@ -42,7 +34,22 @@ rtm.on(RTM_EVENTS.CHANNEL_CREATED, function (message) {
   // Listens to all `channel_created` events from the team
 });
 
-// Server Start
-app.listen(3000, function () {
-  console.log('MCSlack Server listening on port 3000!');
+rtm.on(RTM_EVENTS.AUTHENTICATED, function() {
+  console.log("Server Authenticated..");
 });
+
+rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
+  console.log("");
+  console.log("M.C. Slack Server connected & running");
+  console.log("┏(-_-)┛ ┗(-_-﻿ )┓ ┗(-_-)┛ ┏(-_-)┓   PARTY TIME");
+  console.log("");
+});
+
+rtm.on(RTM_CLIENT_EVENTS.DISCONNECT, function() {
+  console.log("¯\_(ツ)_/¯");
+  console.log("M.C. Slack Server disconnected, restart server to connect again.");
+});
+
+console.log("Initializing server..");
+console.log("Starting..");
+console.log("Connecting..");
