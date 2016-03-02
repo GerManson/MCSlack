@@ -1,0 +1,22 @@
+{
+  "name": "mcslack",
+  "version": "1.0.0",
+  "description": "Lets your entire slack team control media played at the office using a nodejs server installed in a host computer. — Edit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GerManson/MCSlack.git"
+  },
+  "author": "German Rodriguez <german@phisoft.com.mx>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GerManson/MCSlack/issues"
+  },
+  "homepage": "https://github.com/GerManson/MCSlack#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
