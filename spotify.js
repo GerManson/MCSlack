@@ -3,20 +3,20 @@
 var spotify = require('spotify-node-applescript');
 
 module.exports = {
-  playTrack: function () {
-    spotify.playTrack('spotify:track:6S3cdO2t9jfs7KAfZAPieZ', function() {
-    });
+  playTrack: function (trackId, callback) {
+    spotify.playTrack(trackId, function() { callback(); });
   },
 
   getCurrentTrack: function(callback) {
-    console.log("spotify called");
-
     spotify.getTrack(function(err, track) {
       callback(track);
     });
   },
 
-  stop: function() {
+  stop: function(callback) {
+    spotify.pause(function() {
+      callback("No stop function for shopify, used pause instead");
+    });
   },
 
   next: function() {

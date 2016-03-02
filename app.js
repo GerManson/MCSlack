@@ -17,7 +17,7 @@ rtm.start();
 
 var app = {
   commandsAvailable: [
-    'status', 'help', 'play', 'add', 'clear', 'queue', 'info', 'current'
+    'status', 'help', 'play', 'stop', 'add', 'clear', 'queue', 'info', 'current'
   ],
 
   isAction: function(text) {
@@ -26,8 +26,9 @@ var app = {
 
   executeAction: function(action, param, callback) {
     switch(action) {
+
     case "play":
-      spotify.playTrack(function(val) {
+      spotify.playTrack(param, function(val) {
         callback(val);
       });
       break;
@@ -38,29 +39,39 @@ var app = {
         callback(response);
       });
       break;
+
+    case "stop":
+      spotify.stop(function(val) {
+        callback(val);
+      });
+      break;
     }
   }
 };
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
+  console.log(message);
+
   var response = "I am sorry, I didnt understand what you said, type help to see a list of available commands";
   var isAction = false;
 
-  var command = message.text.split(" ");
-  var action = command[0]; var param = command[1];
+  var commandArray = message.text.split(" ", 2);
+  var action = commandArray[0]; var param = commandArray[1];
+
+  // clearning param from < > chars
+  if (commandArray.length > 1) {
+    param = param.replace(/</g, "");
+    param = param.replace(/>/g, "");
+  }
 
   if (app.isAction(action)) {
     app.executeAction(action, param, function(response) {
       rtm.sendMessage(response, message.channel, function messageSent() {});
     });
   }
-
-  // reply with a message
-  //rtm.sendMessage(response, message.channel, function messageSent() {
-  // after message is sent log.
-  //console.log("Message to " +message.channel+": " +response);
-  //});
-
+  else {
+    rtm.sendMessage(response, message.channel, function messageSent() {});
+  }
 });
 
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
