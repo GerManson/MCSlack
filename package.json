@@ -19,6 +19,7 @@
   "dependencies": {
     "@slack/client": "^2.0.6",
     "dotenv": "^2.0.0",
-    "slack-node": "^0.2.0"
+    "slack-node": "^0.2.0",
+    "underscore": "^1.8.3"
   }
 }

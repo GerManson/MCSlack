@@ -1,5 +1,6 @@
 // Dependencies
 var dotenv = require('dotenv');
+var _ = require('underscore');
 
 var RtmClient = require('@slack/client').RtmClient;
 var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
@@ -15,16 +16,31 @@ var token = process.env.SLACK_TOKEN || '';
 var rtm = new RtmClient(token, {logLevel: 'live'});
 rtm.start();
 
+var app = {
+  commandsAvailable: [
+    'status', 'help', 'play', 'add', 'clear', 'queue', 'info'
+  ],
 
-// LISTENING FOR SLACK EVENTS
-rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
-
-});
+  isAction: function(text) {
+    return (_.indexOf(this.commandsAvailable, text) > -1);
+  }
+};
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 
+  var response = "I am sorry, I didnt understand what you said, type help to see a list of available commands";
+  var isAction = false;
+
+  isAction = app.isAction(message.text);
+
+  if (isAction) {
+
+    switch(
+    response = "I understood!!";
+  }
+
   // reply
-  rtm.sendMessage('soy tu espejo: ' + message.text, message.channel, function messageSent() {
+  rtm.sendMessage(response, message.channel, function messageSent() {
     console.log(message);
   });
 
@@ -34,21 +50,19 @@ rtm.on(RTM_EVENTS.CHANNEL_CREATED, function (message) {
   // Listens to all `channel_created` events from the team
 });
 
-rtm.on(RTM_EVENTS.AUTHENTICATED, function() {
-  console.log("Server Authenticated..");
-});
-
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
+  console.log("M.C. Slack Server connected & running.");
   console.log("");
-  console.log("M.C. Slack Server connected & running");
-  console.log("┏(-_-)┛ ┗(-_-﻿ )┓ ┗(-_-)┛ ┏(-_-)┓   PARTY TIME");
-  console.log("");
+  console.log("┏(-_-)┛ ┗(-_-﻿ )┓ ┗(-_-)┛ ┏(-_-)┓  PARTY TIME!");
+  console.log("---------------------------------------------");
 });
 
 rtm.on(RTM_CLIENT_EVENTS.DISCONNECT, function() {
   console.log("¯\_(ツ)_/¯");
   console.log("M.C. Slack Server disconnected, restart server to connect again.");
 });
+
+
 
 console.log("Initializing server..");
 console.log("Starting..");
