@@ -1,12 +1,10 @@
 // Dependencies
-var dotenv = require('dotenv');
-var _ = require('underscore');
-
-var RtmClient = require('@slack/client').RtmClient;
-var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
-var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+var dotenv            = require('dotenv');
+var _                 = require('underscore');
+var RtmClient         = require('@slack/client').RtmClient;
+var CLIENT_EVENTS     = require('@slack/client').CLIENT_EVENTS;
+var RTM_EVENTS        = require('@slack/client').RTM_EVENTS;
 var RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
-
 
 // Loading environment configurations (.env file)
 dotenv.load();
@@ -59,8 +57,6 @@ rtm.on(RTM_CLIENT_EVENTS.DISCONNECT, function() {
   console.log("¯\_(ツ)_/¯");
   console.log("M.C. Slack Server disconnected, restart server to connect again.");
 });
-
-
 
 console.log("Initializing server..");
 console.log("Starting..");
