@@ -19,6 +19,16 @@ module.exports = {
     });
   },
 
-  next: function() {
+  next: function(callback) {
+    spotify.next(function() {
+      callback("Playing next song..");
+    });
+  },
+
+  prev: function(callback) {
+    spotify.previous(function() {
+      callback("Playing previous song..");
+    });
   }
+
 };

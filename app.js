@@ -17,7 +17,8 @@ rtm.start();
 
 var app = {
   commandsAvailable: [
-    'status', 'help', 'play', 'stop', 'add', 'clear', 'queue', 'info', 'current'
+    'play', 'stop', 'next', 'prev',
+    'status', 'help', 'info', 'current'
   ],
 
   isAction: function(text) {
@@ -29,6 +30,33 @@ var app = {
 
     case "play":
       spotify.playTrack(param, function(val) {
+        spotify.getCurrentTrack(function(track) {
+          var response = "Now playing: " + track.artist + " - " + track.name;
+          callback(response);
+        });
+      });
+      break;
+
+    case "next":
+      spotify.next(function(val) {
+        spotify.getCurrentTrack(function(track) {
+          var response = "Now playing: " + track.artist + " - " + track.name;
+          callback(response);
+        });
+      });
+      break;
+
+    case "prev":
+      spotify.prev(function(val) {
+        spotify.getCurrentTrack(function(track) {
+          var response = "Now playing: " + track.artist + " - " + track.name;
+          callback(response);
+        });
+      });
+      break;
+
+    case "stop":
+      spotify.stop(function(val) {
         callback(val);
       });
       break;
@@ -40,38 +68,42 @@ var app = {
       });
       break;
 
-    case "stop":
-      spotify.stop(function(val) {
-        callback(val);
-      });
+    case "help":
+      var help = `Commands available: play <spotify URI>, stop, next, prev, current`;
+      callback(help);
       break;
     }
   }
 };
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
+
   console.log(message);
+  console.log("");
 
-  var response = "I am sorry, I didnt understand what you said, type help to see a list of available commands";
-  var isAction = false;
+  if (message.type == 'message' && message.text != undefined) {
+    var response = "I am sorry, I didnt understand what you said, type help to see a list of available commands";
+    var isAction = false;
 
-  var commandArray = message.text.split(" ", 2);
-  var action = commandArray[0]; var param = commandArray[1];
+    var commandArray = message.text.split(" ", 2);
+    var action = commandArray[0]; var param = commandArray[1];
 
-  // clearning param from < > chars
-  if (commandArray.length > 1) {
-    param = param.replace(/</g, "");
-    param = param.replace(/>/g, "");
-  }
+    // clearning param from < > chars
+    if (commandArray.length > 1) {
+      param = param.replace(/</g, "");
+      param = param.replace(/>/g, "");
+    }
 
-  if (app.isAction(action)) {
-    app.executeAction(action, param, function(response) {
+    if (app.isAction(action)) {
+      app.executeAction(action, param, function(response) {
+        rtm.sendMessage(response, message.channel, function messageSent() {});
+      });
+    }
+    else {
       rtm.sendMessage(response, message.channel, function messageSent() {});
-    });
+    }
   }
-  else {
-    rtm.sendMessage(response, message.channel, function messageSent() {});
-  }
+
 });
 
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
@@ -79,6 +111,10 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
   console.log("");
   console.log("┏(-_-)┛ ┗(-_-﻿ )┓ ┗(-_-)┛ ┏(-_-)┓  PARTY TIME!");
   console.log("---------------------------------------------");
+});
+
+rtm.on(RTM_CLIENT_EVENTS.ATTEMPTING_RECONNECT, function() {
+  console.log("¯\_(ツ)_/¯ Disconnected. Attempting reconnect.." );
 });
 
 rtm.on(RTM_CLIENT_EVENTS.DISCONNECT, function() {
