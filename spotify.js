@@ -29,6 +29,19 @@ module.exports = {
     spotify.previous(function() {
       callback("Playing previous song..");
     });
+  },
+
+  setVolume: function(volume, callback) {
+    spotify.setVolume(volume, function(res) {
+      callback(res);
+    });
+  },
+
+  getState: function(callback) {
+    spotify.getState(function(err, state) {
+      console.log(state);
+      callback(state.volume);
+    });
   }
 
 };

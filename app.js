@@ -17,7 +17,7 @@ rtm.start();
 
 var app = {
   commandsAvailable: [
-    'play', 'stop', 'next', 'prev',
+    'play', 'stop', 'next', 'prev', 'vol',
     'status', 'help', 'info', 'current'
   ],
 
@@ -68,11 +68,23 @@ var app = {
       });
       break;
 
+    case "vol":
+      spotify.setVolume(param, function() {
+        spotify.getState(function(vol) {
+          var response = "Volume set at " + vol;
+          callback(response);
+        });
+      });
+
+      break;
+
     case "help":
-      var help = `Commands available: play <spotify URI>, stop, next, prev, current`;
+      var help = `Commands available: play <spotify URI>, stop, next, prev, current, vol`;
       callback(help);
       break;
     }
+
+
   }
 };
 
