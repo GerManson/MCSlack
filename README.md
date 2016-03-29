@@ -1,9 +1,16 @@
 # M.C. Slack
 Lets your entire slack team control media played at the office using a nodejs server running in a host computer.
 
+## Requirements
+Host computer must:
+- Run OSX 
+- Have Nodejs installed `brew install nodejs`
+- Have spotify application installed
+
 ## Creating your bot
 1. Create your bot at your control panel at slack.com
 2. Save your generated SLACK TOKEN 
+
 
 ## Install server in local computer
 1. This computer speakers will be playing the music
